@@ -1,0 +1,72 @@
+import java.util.Objects;
+import java.util.Scanner;
+
+class InvalidScoreException extends Exception {
+    public InvalidScoreException(String message) {
+        super(message);
+    }
+}
+
+class StudentResult {
+
+    public static double calculateAverage(int[] marks) throws InvalidScoreException {
+
+        try {
+            Objects.checkIndex(marks[0], 101);
+            Objects.checkIndex(marks[1], 101);
+            Objects.checkIndex(marks[2], 101);
+        } 
+        catch (IndexOutOfBoundsException e) {
+            throw new InvalidScoreException("Score must be between 0 and 100.");
+        }
+
+        return (marks[0] + marks[1] + marks[2]) / 3.0;
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            System.out.print("Enter student name: ");
+            String name = sc.nextLine();
+
+            System.out.print("Enter mark 1: ");
+            int m1 = Integer.parseInt(sc.nextLine());
+
+            System.out.print("Enter mark 2: ");
+            int m2 = Integer.parseInt(sc.nextLine());
+
+            System.out.print("Enter mark 3: ");
+            int m3 = Integer.parseInt(sc.nextLine());
+
+            int[] marks = { m1, m2, m3 };
+
+            double avg = StudentResult.calculateAverage(marks);
+
+            System.out.println("\n--- Student Result ---");
+            System.out.println("Name: " + name);
+            System.out.println("Marks: " + m1 + ", " + m2 + ", " + m3);
+            System.out.println("Average Score: " + avg);
+        }
+
+        catch (NumberFormatException e) {
+            System.out.println("Error: Please enter valid numbers!");
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Array index error!");
+        }
+        catch (ArithmeticException e) {
+            System.out.println("Math error!");
+        }
+        catch (InvalidScoreException e) {
+            System.out.println("Invalid Score: " + e.getMessage());
+        }
+        catch (Exception e) {
+            System.out.println("Unexpected error: " + e.getMessage());
+        }
+    }
+}
